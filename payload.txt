@@ -1,4 +1,4 @@
-# Slydoor 1.1
+# Slydoor 1.2
 
 ## [OPTION] Mode
 ### Looks for file with this name (doesn't need extension here - but file requires '.ps1' extension)
